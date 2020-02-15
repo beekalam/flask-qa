@@ -4,7 +4,7 @@ from flask import g
 
 
 def connect_db():
-    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "food_log.db")
+    db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "questions.db")
     sql = sqlite3.connect(db_path)
     sql.row_factory = sqlite3.Row
     return sql
