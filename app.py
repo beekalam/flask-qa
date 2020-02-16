@@ -28,8 +28,23 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == "POST":
+        db = get_db()
+
+        name = request.form['name']
+        password = request.form['password']
+
+        user_cur = db.execute('select id,name, password from users where name = ? ', [name])
+        user_result = user_cur.fetchone()
+        if check_password_hash(user_result['password'], password):
+            return 'the password is correct'
+        else:
+            return 'the password is incorrect'
+
+        # return 'password: {}'.format(user_result['password'])
+        # return "<h1>username: {}, password: {}".format(request.form['name'], request.form['password'])
     return render_template('login.html')
 
 
