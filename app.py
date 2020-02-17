@@ -41,7 +41,7 @@ def register():
                    [request.form['name'], hashed_password, 0, 0])
         db.commit()
         return '<h1>User created</h1>'
-    return render_template('register.html')
+    return render_template('register.html',user=user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -58,47 +58,47 @@ def login():
         user_result = user_cur.fetchone()
         if check_password_hash(user_result['password'], password):
             session['user'] = user_result['name']
-            return 'the password is correct'
+            return redirect(url_for('index'))
         else:
             return 'the password is incorrect'
 
         # return 'password: {}'.format(user_result['password'])
         # return "<h1>username: {}, password: {}".format(request.form['name'], request.form['password'])
-    return render_template('login.html')
+    return render_template('login.html',user=user)
 
 
 @app.route('/question')
 def question():
     user = get_current_user()
-    return render_template('question.html')
+    return render_template('question.html',user=user)
 
 
 @app.route('/answer')
 def answer():
     user = get_current_user()
 
-    return render_template('answer.html')
+    return render_template('answer.html',user=user)
 
 
 @app.route('/ask')
 def ask():
     user = get_current_user()
 
-    return render_template('ask.html')
+    return render_template('ask.html',user=user)
 
 
 @app.route('/unanswered')
 def unanswered():
     user = get_current_user()
 
-    return render_template('unanswered.html')
+    return render_template('unanswered.html',user=user)
 
 
 @app.route('/users')
 def users():
     user = get_current_user()
 
-    return render_template('users.html')
+    return render_template('users.html',user=user)
 
 
 @app.route('/logout')
