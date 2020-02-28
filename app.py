@@ -104,6 +104,8 @@ def answer(question_id):
     user = get_current_user()
     if not user:
         return redirect(url_for('login'))
+    if user['expert'] == 0:
+        return redirect(url_for('index'))
 
     db = get_db()
     if request.method == 'POST':
@@ -141,6 +143,9 @@ def unanswered():
     if not user:
         return redirect(url_for('login'))
 
+    if user['expert'] == 0:
+        return redirect(url_for('index'))
+
     db = get_db()
     questions_cur = db.execute('''select questions.id,questions.question_text, users.name 
                                     from questions 
@@ -155,6 +160,8 @@ def users():
     user = get_current_user()
     if not user:
         return redirect(url_for('login'))
+    if user['admin'] == 0:
+        return redirect(url_for('index'))
 
     db = get_db()
     users_cur = db.execute('select id, name, expert, admin from users')
@@ -166,6 +173,12 @@ def users():
 @app.route('/promote/<user_id>')
 def promote(user_id):
     user = get_current_user()
+    if not user:
+        return redirect(url_for('login'))
+
+    if user['admin'] == 0:
+        return redirect(url_for('index'))
+
     if not user:
         return redirect(url_for('login'))
 
